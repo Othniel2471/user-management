@@ -1,5 +1,7 @@
+// src/App.tsx
 import React, { useState } from 'react';
 import { User } from './models/User';
+import './index.css';
 
 const App: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -73,7 +75,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className={`container ${loggedIn ? 'logged-in' : ''}`}>
       {loggedIn ? (
         <div>
           <h2>User List</h2>
@@ -81,8 +83,14 @@ const App: React.FC = () => {
             {users.map((user) => (
               <li key={user.id}>
                 {user.name} - {user.email} - {user.role}{' '}
-                <button onClick={() => handleEdit(user.id)}>Edit</button>
                 <button
+                  className="edit-btn"
+                  onClick={() => handleEdit(user.id)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="delete-btn"
                   onClick={() => {
                     const updatedUsers = users.filter((u) => u.id !== user.id);
                     setUsers(updatedUsers);
@@ -95,17 +103,15 @@ const App: React.FC = () => {
           </ul>
 
           <h2>{editUserId !== null ? 'Edit User' : 'Add User'}</h2>
-          <form onSubmit={handleSubmit}>
+          <form className="user-form" onSubmit={handleSubmit}>
             <label>
               Name:
               <input type="text" name="name" id="name" />
             </label>
-            <br />
             <label>
               Email:
               <input type="email" name="email" id="email" />
             </label>
-            <br />
             <label>
               Role:
               <select name="role" id="role">
@@ -118,7 +124,11 @@ const App: React.FC = () => {
               {editUserId !== null ? 'Update User' : 'Add User'}
             </button>
             {editUserId !== null && (
-              <button type="button" onClick={handleCancelEdit}>
+              <button
+                type="button"
+                onClick={handleCancelEdit}
+                className="cancel-btn"
+              >
                 Cancel
               </button>
             )}
